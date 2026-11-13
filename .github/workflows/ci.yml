@@ -1,0 +1,62 @@
+name: CI
+
+on:
+  push:
+    branches: [ "main" ]
+    tags: [ "v*" ]
+  pull_request:
+    branches: [ "main" ]
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-test:
+    name: Build & Test (${{ matrix.compiler }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        compiler: [g++, clang++]
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Install Clang Compiler
+        if: matrix.compiler == 'clang++'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y clang
+
+      - name: Compile and Run Test Suite
+        run: |
+          make clean
+          make CXX=${{ matrix.compiler }} all test
+
+      - name: Verify Hardened Receiver Policy (Score 100/100, Exit 0)
+        run: |
+          ./bin/lh-sdr-fm scan fixtures/hardened_sdr_receiver.json --format table
+          ./bin/lh-sdr-fm scan fixtures/hardened_sdr_receiver.json --format json
+          ./bin/lh-sdr-fm scan fixtures/hardened_sdr_receiver.json --format sarif
+
+      - name: Verify Vulnerable Receiver Policy (Score 0/100, Exit 1)
+        run: |
+          set +e
+          ./bin/lh-sdr-fm scan fixtures/vulnerable_sdr_receiver.json --format table
+          EXIT_CODE=$?
+          set -e
+          if [ $EXIT_CODE -ne 1 ]; then
+            echo "Expected exit code 1 for vulnerable policy, got $EXIT_CODE"
+            exit 1
+          fi
+
+      - name: Run SIMD Discriminator Benchmark
+        run: |
+          ./bin/lh-sdr-fm benchmark --samples 500000
+
+      - name: End-to-End IQ Synthesis and Demodulation Smoke Test
+        run: |
+          ./bin/lh-sdr-fm gen-iq /tmp/smoke_tone.iq --tone-hz 1000 --sample-rate 240000 --samples 240000 --freq-dev 75000
+          ./bin/lh-sdr-fm demod /tmp/smoke_tone.iq --output /tmp/smoke_tone.wav --mode WBFM --sample-rate 240000 --audio-rate 48000 --deemph 50
+          file /tmp/smoke_tone.wav | grep -E "WAVE audio|RIFF"

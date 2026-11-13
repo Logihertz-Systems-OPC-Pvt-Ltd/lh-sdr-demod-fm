@@ -1,0 +1,21 @@
+Logihertz SDR Demodulator FM (lh-sdr-demod-fm)
+Copyright (c) 2026 Logihertz Systems (OPC) Private Limited. All Rights Reserved.
+
+This product includes software developed by Logihertz Systems (OPC) Private Limited
+(https://logihertz.com/).
+
+Creator, Founder, Director & Sole Developer:
+  Sameer Tawade <ops@logihertz.com> / <security@logihertz.com>
+
+Corporate Entity:
+  Logihertz Systems (OPC) Private Limited
+  CIN: U72900MH2022OPC385552
+  Mumbai, Maharashtra, India
+
+Product:
+  lh-sdr-demod-fm (CLI: bin/lh-sdr-fm)
+  C++17 SIMD-Accelerated Wideband & Narrowband FM Quadrature Demodulator,
+  IQ Imbalance Compensator, IIR De-Emphasis Engine, and 10-Rule SDR Receiver Posture Auditor.
+
+This software is released under the Apache License, Version 2.0.
+See the LICENSE file for details.

@@ -1,0 +1,23 @@
+# Build artifacts
+build/
+bin/lh-sdr-fm
+tests/test_runner
+dist/
+*.o
+*.d
+*.a
+*.so
+*.dylib
+
+# Audio and generated test files
+*.wav
+*.pcm
+*.iq.tmp
+
+# Editor & OS files
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
