@@ -1,0 +1,9 @@
+Package: lh-sdr-demod-fm
+Version: 0.1.0
+Section: utils
+Priority: optional
+Architecture: amd64
+Maintainer: Sameer Tawade <ops@logihertz.com>
+Homepage: https://www.logihertz.com
+Description: lh-sdr-fm - Quadrature Polar Discriminator & Gram-Schmidt IQ Balance
+ C++17 SIMD-accelerated (AVX2 & ARM NEON) Wideband & Narrowband FM quadrature polar discriminator, Gram-Schmidt IQ imbalance compensator, 50us/75us IIR de-emphasis filter, and SDR receiver posture auditor.
